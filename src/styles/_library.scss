@@ -6,18 +6,24 @@
   position: fixed;
   top: 0;
   left: 0;
-  width: 30rem;
-  max-width: 500px;
+  width: 35rem;
   height: 100%;
   box-shadow: 2px 2px 50px rgb(204, 204, 204);
-  display: flex;
-  flex-direction: column;
   overflow: scroll;
   transform: translateX(-100%);
   transition: all 0.5s;
   opacity: 0;
   h2 {
-    padding: 1rem 2rem;
+    padding: 2rem;
+  }
+}
+
+.library-songs {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  img {
+    width: 30%;
   }
 }
 
@@ -27,16 +33,14 @@
   align-items: center;
   padding: 1rem 2rem;
   cursor: pointer;
-  img {
-    width: 40%;
-  }
+
   &:hover {
-    background: rgb(122, 122, 155);
+    background: rgb(222, 222, 255);
   }
 }
 
 .song-description {
-  padding-left: 1rem;
+  padding-left: 2rem;
 }
 
 .show {
@@ -64,4 +68,10 @@
   background-color: rgba(155, 155, 155, 0.5);
   border-radius: 20px;
   border: transparent;
+}
+
+@media screen and (max-width: 678px) {
+  .library {
+    width: 100%;
+  }
 }

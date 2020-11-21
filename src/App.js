@@ -62,7 +62,9 @@ function App() {
     if (type === "skip-forward")
       nextSong = songs[(indexSong + 1) % songs.length];
     else if (type === "skip-back") {
-      nextSong = songs[(indexSong - 1) % songs.length];
+      if (indexSong - 1 === -1) {
+        nextSong = songs[songs.length - 1];
+      } else nextSong = songs[(indexSong - 1) % songs.length];
     }
     selectedSongHandle(nextSong.id);
   };
@@ -90,6 +92,7 @@ function App() {
         ref={audioRef}
         onTimeUpdate={updateTimeHandle}
         onLoadedMetadata={updateTimeHandle}
+        onEnded={() => skipSongHandle("skip-forward")}
       ></audio>
     </div>
   );

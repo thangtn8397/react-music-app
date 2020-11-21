@@ -32,7 +32,7 @@ const Player = ({
         <input
           type="range"
           min={0}
-          max={songInfo.duration ? songInfo.duration : "0:00"}
+          max={songInfo.duration ? songInfo.duration : 0}
           value={songInfo.currentTime | " "}
           onChange={(e) => {
             if (!isPlaying) {
@@ -45,7 +45,7 @@ const Player = ({
             });
           }}
         />
-        <p>{getTime(songInfo.duration)}</p>
+        <p>{songInfo.duration ? getTime(songInfo.duration) : "0:00"}</p>
       </div>
       <div className="play-control">
         <FontAwesomeIcon

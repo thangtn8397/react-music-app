@@ -4,14 +4,22 @@
   display: flex;
   justify-content: space-around;
   align-items: center;
-  border-radius: 2px;
   button {
     padding: 1rem;
-    background-color: #fff;
+    background-color: transparent;
+    border: 2px solid rgb(65, 65, 65);
+    outline: none;
+    cursor: pointer;
+    transition: background-color 0.5s;
     &:hover {
-      background-color: rgb(36, 33, 33);
+      background-color: rgb(65, 65, 65);
       color: #fff;
     }
-    transition: background-color 0.5s;
+  }
+}
+
+@media screen and (max-width: 678px) {
+  button {
+    z-index: 100;
   }
 }
