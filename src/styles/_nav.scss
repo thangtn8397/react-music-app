@@ -1,0 +1,17 @@
+.nav-container {
+  font-size: 1.6rem;
+  min-height: 10vh;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  border-radius: 2px;
+  button {
+    padding: 1rem;
+    background-color: #fff;
+    &:hover {
+      background-color: rgb(36, 33, 33);
+      color: #fff;
+    }
+    transition: background-color 0.5s;
+  }
+}
