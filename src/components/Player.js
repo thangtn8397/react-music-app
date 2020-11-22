@@ -8,6 +8,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 const Player = ({
+  currentSong,
   audioRef,
   isPlaying,
   setIsPlaying,
@@ -25,26 +26,34 @@ const Player = ({
   const getTime = (time) =>
     Math.floor(time / 60) + ":" + ("0" + Math.floor(time % 60)).slice(-2);
 
+  const trackAnim = {
+    transform: `translateX(${songInfo.animationPercentage}%)`,
+  };
   return (
     <div className="player">
       <div className="time-control">
         <p>{getTime(songInfo.currentTime)}</p>
-        <input
-          type="range"
-          min={0}
-          max={songInfo.duration ? songInfo.duration : 0}
-          value={songInfo.currentTime | " "}
-          onChange={(e) => {
-            if (!isPlaying) {
-              setIsPlaying(true);
-            }
-            audioRef.current.currentTime = e.target.value;
-            setSongInfo({
-              ...songInfo,
-              currentTime: e.target.value,
-            });
+        <div
+          className="track"
+          style={{
+            background: `linear-gradient(to right, ${currentSong.color[0]}, ${currentSong.color[1]})`,
           }}
-        />
+        >
+          <input
+            type="range"
+            min={0}
+            max={songInfo.duration ? songInfo.duration : 0}
+            value={songInfo.currentTime | " "}
+            onChange={(e) => {
+              audioRef.current.currentTime = e.target.value;
+              setSongInfo({
+                ...songInfo,
+                currentTime: e.target.value,
+              });
+            }}
+          />
+          <div className="animated-track" style={trackAnim}></div>
+        </div>
         <p>{songInfo.duration ? getTime(songInfo.duration) : "0:00"}</p>
       </div>
       <div className="play-control">

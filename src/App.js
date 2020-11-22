@@ -10,28 +10,47 @@ function App() {
   const audioRef = useRef(null);
   const [songs, setSongs] = useState(data);
   const [currentSong, setCurrentSong] = useState(data[0]);
-  const [isPlaying, setIsPlaying] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(true);
   const [songInfo, setSongInfo] = useState({
     currentTime: 0,
     duration: 0,
+    animationPercentage: 0,
   });
   const [libraryShow, setLibraryShow] = useState(false);
-
   useEffect(() => {
-    if (isPlaying) {
-      audioRef.current.play();
-    } else audioRef.current.pause();
-  });
+    const newSongs = songs.map((song) => {
+      if (song.id === currentSong.id) {
+        return {
+          ...song,
+          active: true,
+        };
+      } else {
+        return {
+          ...song,
+          active: false,
+        };
+      }
+    });
+    setSongs(newSongs);
+  }, [currentSong]);
 
   const updateTimeHandle = () => {
+    const currentTime = audioRef.current.currentTime;
+    const duration = audioRef.current.duration;
+
+    const roundedCunrrent = Math.round(currentTime);
+    const roundedDuration = Math.round(duration);
+    const animation = Math.round((roundedCunrrent / roundedDuration) * 100);
     setSongInfo({
       currentTime: audioRef.current.currentTime,
       duration: audioRef.current.duration,
+      animationPercentage: animation,
     });
   };
 
   const selectedSongHandle = (songId) => {
     const selectedSong = songs.filter((song) => song.id === songId)[0];
+    setCurrentSong(selectedSong);
     // Add active state
     const newSongs = songs.map((song) => {
       if (song.id === songId) {
@@ -47,18 +66,15 @@ function App() {
       }
     });
     setSongs(newSongs);
-    setCurrentSong(selectedSong);
-    if (isPlaying) {
-      const promisePlay = audioRef.current.play();
-      if (promisePlay !== undefined) {
-        promisePlay.then(() => audioRef.current.play());
-      }
-    }
+    //console.log(audioRef.current.play());
+    //if (isPlaying) {
+    //  audioRef.current.play();
+    //}
   };
 
-  const skipSongHandle = (type) => {
+  const nextSong = (type) => {
     const indexSong = songs.findIndex((song) => song.id === currentSong.id);
-    let nextSong;
+    let nextSong = null;
     if (type === "skip-forward")
       nextSong = songs[(indexSong + 1) % songs.length];
     else if (type === "skip-back") {
@@ -66,7 +82,11 @@ function App() {
         nextSong = songs[songs.length - 1];
       } else nextSong = songs[(indexSong - 1) % songs.length];
     }
-    selectedSongHandle(nextSong.id);
+    return nextSong;
+  };
+
+  const skipSongHandle = (type) => {
+    selectedSongHandle(nextSong(type).id);
   };
 
   return (
@@ -88,6 +108,7 @@ function App() {
         show={libraryShow}
       />
       <audio
+        autoPlay
         src={currentSong.audio}
         ref={audioRef}
         onTimeUpdate={updateTimeHandle}
